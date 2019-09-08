@@ -303,3 +303,48 @@ urlpatterns = [
 
 ### Introducing Viewsets and Routers
 
+```python
+# urls.py
+# ...
+from rest_framework.routers import DefaultRouter
+from .apiviews import PollViewSet
+
+
+router = DefaultRouter()
+router.register('polls', PollViewSet, base_name='polls')
+
+
+urlpatterns = [
+    # ...
+]
+
+urlpatterns += router.urls
+
+# apiviews.py
+# ...
+from rest_framework import viewsets
+
+from .models import Poll, Choice
+from .serializers import PollSerializer, ChoiceSerializer, VoteSerializer
+
+
+class PollViewSet(viewsets.ModelViewSet):
+    queryset = Poll.objects.all()
+    serializer_class = PollSerializer
+```
+
+### Choosing the base class to use
+
+We have seen 4 ways to build API views until now
+
+- Pure Django views
+- `APIView` subclasses
+- `generics.*` subclasses
+- `viewsets.ModelViewSet`
+
+So which one should you use when? My rule of thumb is,
+
+- Use `viewsets.ModelViewSet` when you are going to allow all or most of CRUD operations on a model.
+- Use `generics.*` when you only want to allow some operations on a model
+- Use `APIView` when you want to completely customize the behaviour.
+
