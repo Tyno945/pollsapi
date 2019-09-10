@@ -530,3 +530,5 @@ class ChoiceList(generics.ListCreateAPIView):
             raise PermissionDenied("You can not create choice for this poll.")
         return super().post(request, *args, **kwargs)
 ```
+
+## Testing and Continuous Integeration
